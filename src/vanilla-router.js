@@ -61,7 +61,30 @@ class VanillaRouterData {
             children: children // hash table
         };
     }
-    mature () {
+    metamorphose (node) {
+        if (!node.children)
+            node.children = [];
+
+        if (!node.style)
+            node.style = {};
+
+        if (!node.code || node.code.length==0)
+            console.warn('code が空です。', node);
+
+        if (!node.tag || node.tag.length==0)
+            if (node.children.length==0)
+                console.warn('tag が空です。', node);
+    }
+    mature (routes) {
+        for (let node of routes) {
+            this.metamorphose(node);
+
+            if (node.children.length==0)
+                continue;
+
+            this.mature(node.children); // 再帰だけど、ゆるしてね。
+        }
+
         return this;
     }
 }
@@ -128,6 +151,7 @@ class VanillaRouter extends VanillaRouterData {
             return null;
 
         let key = route[0];
+
 
         let node = routes.find((n) => {
             if (!n.regex)
@@ -197,10 +221,18 @@ class VanillaRouterRiot extends VanillaRouter {
 
         throw new Error('指定されたノードが存在しません。');
     }
+    /**
+     * routes から route で指定した node を取得します。
+     *
+     * @root_tag マウントするタグ
+     * @routes   ルート情報(木構造)
+     * @data     ルート情報(配列)
+     */
     draw (root_tag, routes, data) {
-        let retsult = this.getNode(routes, data.route);
+        let retsult = this.getNode(routes, data);
 
-        this.assertNode(retsult.node, data);
+        let node = retsult ? retsult.node : null;
+        this.assertNode(node, data);
 
         let tag_name = retsult.node.tag;
 
