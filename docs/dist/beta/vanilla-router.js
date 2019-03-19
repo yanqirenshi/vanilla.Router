@@ -61,6 +61,59 @@ class VanillaRouterData {
             children: children // hash table
         };
     }
+    assertHaveChildren (page) {
+        console.assert(page, page);
+
+        if (page.tag)
+            return;
+
+        if (page.children && page.children.length > 0)
+            return;
+
+        throw new Error('Page に Children が設定されていません。\n' +
+                        'Ppage:\n' +
+                        JSON.stringify(page, null , "\t"));
+    }
+    setHashTo (page) {
+        this.assertHaveChildren(page);
+
+        for (let child of page.children) {
+            let hash = '#' + page.code;
+
+            if (child.code!='root')
+                hash += '/' + child.code;
+
+            child.hash = hash;
+        }
+    }
+    metamorphose (node) {
+        if (!node.children)
+            node.children = [];
+
+        if (!node.style)
+            node.style = {};
+
+        if (!node.code || node.code.length==0)
+            console.warn('code が空です。', node);
+
+        if (!node.tag || node.tag.length==0)
+            if (node.children.length==0)
+                console.warn('tag が空です。', node);
+
+        this.setHashTo(node);
+    }
+    mature (routes) {
+        for (let node of routes) {
+            this.metamorphose(node);
+
+            if (node.children.length==0)
+                continue;
+
+            this.mature(node.children); // 再帰だけど、ゆるしてね。
+        }
+
+        return this;
+    }
 }
 
 
@@ -112,7 +165,10 @@ class VanillaRouter extends VanillaRouterData {
      *
      * @route Array
      */
-    getNode (routes, route) {
+    getNode (routes, route, path_params) {
+        if (!path_params)
+            path_params = {};
+
         if (!route)
             return null;
 
@@ -123,17 +179,29 @@ class VanillaRouter extends VanillaRouterData {
 
         let key = route[0];
 
+
         let node = routes.find((n) => {
-            return n.code == key;
+            if (!n.regex)
+                return n.code == key;
+
+            if (!n.regex.exec(key))
+                return false;
+
+            path_params[n.code] = key;
+
+            return true;
         });
 
         if (!node)
             return null;
 
         if (route_length==1)
-            return node;
+            return {
+                node: node,
+                params: { path: path_params },
+            };
 
-        return this.getNode(node.children, route.slice[1]);
+        return this.getNode(node.children, route.slice(1), path_params);
     }
 }
 
@@ -149,7 +217,17 @@ class VanillaRouterRiot extends VanillaRouter {
             delete root_tag.tags[unmount_tag_name];
         }
     }
-    mount (root_tag, tag_name, targets) {
+    mountCore (root_tag, tag_name, params) {
+        try {
+            let new_page_tag = riot.mount(tag_name, { _route: { params: params } });
+            root_tag.tags[tag_name] = new_page_tag[0];
+        } catch (e) {
+            dump(e);
+            dump({ root_tag:root_tag, tag_name:tag_name });
+            throw new Error('タグのマウントに失敗しました。');
+        }
+    }
+    mount (root_tag, tag_name, targets, params) {
         if (targets.mounted.length==1) {
             targets.mounted[0].update();
         } else {
@@ -159,13 +237,31 @@ class VanillaRouterRiot extends VanillaRouter {
             let page_holder_elem = root_tag.root;
             page_holder_elem.appendChild(elem);
 
-            let new_page_tag = riot.mount(tag_name);
-            root_tag.tags[tag_name] = new_page_tag[0];
+            this.mountCore(root_tag, tag_name, params);
         }
     }
+    assertNode (node, data) {
+        if (node)
+            return;
+
+        console.log(data);
+
+        throw new Error('指定されたノードが存在しません。');
+    }
+    /**
+     * routes から route で指定した node を取得します。
+     *
+     * @root_tag マウントするタグ
+     * @routes   ルート情報(木構造)
+     * @data     ルート情報(配列)
+     */
     draw (root_tag, routes, data) {
-        let node = this.getNode(routes, data.route);
-        let tag_name = node.tag;
+        let retsult = this.getNode(routes, data);
+
+        let node = retsult ? retsult.node : null;
+        this.assertNode(node, data);
+
+        let tag_name = retsult.node.tag;
 
         let children  = root_tag.tags;
         let targets = {
@@ -184,6 +280,6 @@ class VanillaRouterRiot extends VanillaRouter {
         }
 
         this.unmounts(root_tag, targets);
-        this.mount(root_tag, tag_name, targets);
+        this.mount(root_tag, tag_name, targets, retsult.params);
     }
 }
