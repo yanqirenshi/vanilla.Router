@@ -206,8 +206,10 @@ class VanillaRouter extends VanillaRouterData {
 }
 
 class VanillaRouterRiot extends VanillaRouter {
-    constructor (options) {
+    constructor (routes, options) {
         super(options);
+
+        this.mature(routes);
     }
     unmounts (root_tag, targets) {
         for (let tag of targets.unmount) {
