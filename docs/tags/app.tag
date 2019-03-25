@@ -3,6 +3,9 @@
 
     <div ref="page-area"></div>
 
+    <github-link fill="#e8c59c" color="#fff"
+                 href="https://github.com/yanqirenshi/vanilla.Router"></github-link>
+
     <script>
      this.site = () => {
          return STORE.state().get('site');

@@ -12,7 +12,7 @@
 
     <style>
      section-header > .section {
-         background: #f8f4ea;
+         background: #f6e9da;
      }
     </style>
 </section-header>
