@@ -1,0 +1,17 @@
+<app>
+
+    <app-page-area></app-page-area>
+
+    <script>
+     STORE.subscribe((action)=>{
+         if (action.type=='MOVE-PAGE') {
+             this.updateMenuBar();
+             this.tags['app-page-area'].update({ opts: { route: action.route }});
+         }
+     });
+
+     if (location.hash=='')
+         location.hash=STORE.get('site.active_page');
+    </script>
+
+</app>

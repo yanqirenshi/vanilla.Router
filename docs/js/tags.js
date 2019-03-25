@@ -258,13 +258,14 @@ riot.tag2('home', '', '', '', function(opts) {
      this.on('update', () => { this.draw(); });
 });
 
-riot.tag2('home_page_root', '<section-header title="Vanilla Router Docs"></section-header> <page-tabs core="{page_tabs}" callback="{clickTab}" style="display:block; margin-top: 33px;"></page-tabs> <div> <home_tab_readme class="hide"></home_tab_readme> <home_tab_usage class="hide"></home_tab_usage> <home_tab_find-data-tructure class="hide"></home_tab_find-data-tructure> <home_tab_find-node class="hide"></home_tab_find-node> <home_tab_classes></home_tab_classes> </div> <section-footer></section-footer>', '', '', function(opts) {
+riot.tag2('home_page_root', '<section-header title="Vanilla Router Docs"></section-header> <page-tabs core="{page_tabs}" callback="{clickTab}" style="display:block; margin-top: 33px;"></page-tabs> <div> <home_tab_readme class="hide"></home_tab_readme> <home_tab_usage class="hide"></home_tab_usage> <home_tab_usage-riot class="hide"></home_tab_usage-riot> <home_tab_find-data-tructure class="hide"></home_tab_find-data-tructure> <home_tab_find-node class="hide"></home_tab_find-node> <home_tab_classes></home_tab_classes> </div> <section-footer></section-footer>', '', '', function(opts) {
      this.page_tabs = new PageTabs([
-         {code: 'readme',         label: 'README',       tag: 'home_tab_readme' },
-         {code: 'usage',          label: 'Usage',        tag: 'home_tab_usage' },
-         {code: 'datas-tructure', label: 'データ構造',   tag: 'home_tab_find-data-tructure' },
-         {code: 'find-node',      label: 'ノードの検索', tag: 'home_tab_find-node' },
-         {code: 'classes',        label: 'Classes',      tag: 'home_tab_classes' },
+         {code: 'readme',         label: 'README',          tag: 'home_tab_readme' },
+         {code: 'usage',          label: 'Usage',           tag: 'home_tab_usage' },
+         {code: 'usage-riot',     label: 'Usage (Riot.js)', tag: 'home_tab_usage-riot' },
+         {code: 'datas-tructure', label: 'データ構造',      tag: 'home_tab_find-data-tructure' },
+         {code: 'find-node',      label: 'ノードの検索',    tag: 'home_tab_find-node' },
+         {code: 'classes',        label: 'Classes',         tag: 'home_tab_classes' },
      ]);
 
      this.on('mount', () => {
@@ -288,6 +289,9 @@ riot.tag2('home_tab_find-node', '', '', '', function(opts) {
 });
 
 riot.tag2('home_tab_readme', '<section class="section"> <div class="container"> <h1 class="title">CDN</h1> <h2 class="subtitle"></h2> <div class="contents"> <p>https://yanqirenshi.github.io/vanilla.Router/dist/beta/vanilla.router.js</p> <p>https://yanqirenshi.github.io/vanilla.Router/dist/beta/vanilla-router.js ※非推奨</p> <p>https://yanqirenshi.github.io/vanilla.Router/dist/0.0.2/vanilla-router.js</p> <p>https://yanqirenshi.github.io/vanilla.Router/dist/0.0.1/vanilla-router.js</p> </div> </div> </section>', '', '', function(opts) {
+});
+
+riot.tag2('home_tab_usage-riot', '<section class="section"> <div class="container"> <h1 class="title">Tag</h1> <h2 class="subtitle"></h2> <section class="section"> <div class="container"> <h1 class="title is-4">app</h1> <h2 class="subtitle"></h2> <div class="contents"> <p> <pre></pre>\n                        </p>\n                    </div>\n                </div>\n            </section>\n\n            <section class="section">\n                <div class="container">\n                    <h1 class="title is-4">app-page-area</h1>\n                    <h2 class="subtitle"></h2>\n\n                    <div class="contents">\n                        <p>\n                            <pre></pre> </p> </div> </div> </section> </div> </section> <section class="section"> <div class="container"> <h1 class="title">Javascript</h1> <h2 class="subtitle"></h2> <section class="section"> <div class="container"> <h1 class="title is-4">index.js</h1> <h2 class="subtitle"></h2> <div class="contents"> <p> <pre></pre> </p> </div> </div> </section> </div> </section>', '', '', function(opts) {
 });
 
 riot.tag2('home_tab_usage', '<section class="section"> <div class="container"> <h1 class="title">HTML</h1> <h2 class="subtitle"></h2> <div class="contents"> <p>page-area にルートのページを表示します。</p> <p> <pre>{html.join(\'\\n\')}</pre> </p> </div> </div> </section> <section class="section"> <div class="container"> <h1 class="title">Javascript</h1> <h2 class="subtitle"></h2> <section class="section"> <div class="container"> <h1 class="title is-4">(1) 開始</h1> <h2 class="subtitle"></h2> <div class="contents"> <p>VanillaRouter.start()で riot-router を startさせています。</p> <p>callbacks.routes は VanillaRouter がルートのデータを取得するためのものです。</p> <p>changed は VanillaRouter が url の変更を感知したとき実行されるものです。</p> <p> <pre>{js_start.join(\'\\n\')}</pre> </p> </div> </div> </section> </div> </section>', '', '', function(opts) {

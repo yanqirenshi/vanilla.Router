@@ -9,6 +9,7 @@
     <div>
         <home_tab_readme             class="hide"></home_tab_readme>
         <home_tab_usage              class="hide"></home_tab_usage>
+        <home_tab_usage-riot         class="hide"></home_tab_usage-riot>
         <home_tab_find-data-tructure class="hide"></home_tab_find-data-tructure>
         <home_tab_find-node          class="hide"></home_tab_find-node>
         <home_tab_classes></home_tab_classes>
@@ -18,11 +19,12 @@
 
     <script>
      this.page_tabs = new PageTabs([
-         {code: 'readme',         label: 'README',       tag: 'home_tab_readme' },
-         {code: 'usage',          label: 'Usage',        tag: 'home_tab_usage' },
-         {code: 'datas-tructure', label: 'データ構造',   tag: 'home_tab_find-data-tructure' },
-         {code: 'find-node',      label: 'ノードの検索', tag: 'home_tab_find-node' },
-         {code: 'classes',        label: 'Classes',      tag: 'home_tab_classes' },
+         {code: 'readme',         label: 'README',          tag: 'home_tab_readme' },
+         {code: 'usage',          label: 'Usage',           tag: 'home_tab_usage' },
+         {code: 'usage-riot',     label: 'Usage (Riot.js)', tag: 'home_tab_usage-riot' },
+         {code: 'datas-tructure', label: 'データ構造',      tag: 'home_tab_find-data-tructure' },
+         {code: 'find-node',      label: 'ノードの検索',    tag: 'home_tab_find-node' },
+         {code: 'classes',        label: 'Classes',         tag: 'home_tab_classes' },
      ]);
 
      this.on('mount', () => {
