@@ -258,12 +258,13 @@ riot.tag2('home', '', '', '', function(opts) {
      this.on('update', () => { this.draw(); });
 });
 
-riot.tag2('home_page_root', '<section-header title="Vanilla Router Docs"></section-header> <page-tabs core="{page_tabs}" callback="{clickTab}" style="display:block; margin-top: 33px;"></page-tabs> <div> <home_tab_readme class="hide"></home_tab_readme> <home_tab_usage class="hide"></home_tab_usage> <home_tab_find-data-tructure class="hide"></home_tab_find-data-tructure> <home_tab_find-node class="hide"></home_tab_find-node> </div> <section-footer></section-footer>', '', '', function(opts) {
+riot.tag2('home_page_root', '<section-header title="Vanilla Router Docs"></section-header> <page-tabs core="{page_tabs}" callback="{clickTab}" style="display:block; margin-top: 33px;"></page-tabs> <div> <home_tab_readme class="hide"></home_tab_readme> <home_tab_usage class="hide"></home_tab_usage> <home_tab_find-data-tructure class="hide"></home_tab_find-data-tructure> <home_tab_find-node class="hide"></home_tab_find-node> <home_tab_classes></home_tab_classes> </div> <section-footer></section-footer>', '', '', function(opts) {
      this.page_tabs = new PageTabs([
          {code: 'readme',         label: 'README',       tag: 'home_tab_readme' },
          {code: 'usage',          label: 'Usage',        tag: 'home_tab_usage' },
          {code: 'datas-tructure', label: 'データ構造',   tag: 'home_tab_find-data-tructure' },
          {code: 'find-node',      label: 'ノードの検索', tag: 'home_tab_find-node' },
+         {code: 'classes',        label: 'Classes',      tag: 'home_tab_classes' },
      ]);
 
      this.on('mount', () => {
@@ -275,6 +276,9 @@ riot.tag2('home_page_root', '<section-header title="Vanilla Router Docs"></secti
          if (this.page_tabs.switchTab(this.tags, data.code))
              this.update();
      };
+});
+
+riot.tag2('home_tab_classes', '<section class="section"> <div class="container"> <h1 class="title">概要</h1> <h2 class="subtitle"></h2> <div class="contents"> <p>いくつかのクラスで構成されます。</p> </div> </div> </section> <section class="section"> <div class="container"> <h1 class="title">Class: VanillaRouter</h1> <h2 class="subtitle">vanilla.Route のメインクラスです。</h2> <div class="contents"> <p>それなりにルーティングします。</p> <p>VanillaRouterData を継承しています。</p> </div> </div> </section> <section class="section"> <div class="container"> <h1 class="title">Class: VanillaRouterData</h1> <h2 class="subtitle"></h2> <div class="contents"> <p>ルーティングのデータを管理するためのクラスです</p> <p>ルーティングのデータを Method:mature に流し込む感じで使います</p> </div> </div> </section> <section class="section"> <div class="container"> <h1 class="title">Class: VanillaRouterRiot</h1> <h2 class="subtitle"></h2> <div class="contents"> <p>riot.Template で利用するためクラスです。</p> <p>ルートのタグを描画したりします。</p> </div> </div> </section>', '', '', function(opts) {
 });
 
 riot.tag2('home_tab_find-data-tructure', '', '', '', function(opts) {
