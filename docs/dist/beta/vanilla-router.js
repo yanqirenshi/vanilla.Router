@@ -246,7 +246,8 @@ class VanillaRouterRiot extends VanillaRouter {
         if (node)
             return;
 
-        console.log(data);
+        console.warn(node);
+        console.warn(data);
 
         throw new Error('指定されたノードが存在しません。');
     }
