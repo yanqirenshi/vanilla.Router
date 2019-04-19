@@ -242,6 +242,14 @@ class VanillaRouterRiot extends VanillaRouter {
             this.mountCore(root_tag, tag_name, params);
         }
     }
+    getTagNmae (node, data) {
+        let tag = node.tag;
+
+        if (typeof tag=='function')
+            return tag(node, data);
+
+        return tag;
+    }
     assertNode (node, data) {
         if (node)
             return;
@@ -264,7 +272,7 @@ class VanillaRouterRiot extends VanillaRouter {
         let node = retsult ? retsult.node : null;
         this.assertNode(node, data);
 
-        let tag_name = retsult.node.tag;
+        let tag_name = this.getTagNmae(retsult.node, data);
 
         let children  = root_tag.tags;
         let targets = {
