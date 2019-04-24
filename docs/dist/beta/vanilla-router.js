@@ -130,6 +130,7 @@ class VanillaRouter extends VanillaRouterData {
             this.getRoutes = options.callbacks.routes;
             this.action = {
                 changed: options.callbacks.changed,
+                error:   options.callbacks.error,
             };
         }
 
@@ -254,10 +255,14 @@ class VanillaRouterRiot extends VanillaRouter {
         if (node)
             return;
 
+        console.warn('指定されたノードが存在しません。');
         console.warn(node);
         console.warn(data);
 
-        throw new Error('指定されたノードが存在しません。');
+        if (this.action.error || this.action.error['404'])
+            this.action.error['404'](node, data);
+        else
+            throw new Error('指定されたノードが存在しません。');
     }
     /**
      * routes から route で指定した node を取得します。
