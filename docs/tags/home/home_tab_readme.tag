@@ -8,8 +8,12 @@
             <div class="contents">
                 <p>https://yanqirenshi.github.io/vanilla.Router/dist/beta/vanilla.router.js</p>
                 <p>https://yanqirenshi.github.io/vanilla.Router/dist/beta/vanilla-router.js ※非推奨</p>
-                <p>https://yanqirenshi.github.io/vanilla.Router/dist/0.0.2/vanilla-router.js</p>
-                <p>https://yanqirenshi.github.io/vanilla.Router/dist/0.0.1/vanilla-router.js</p>
+                <p>https://yanqirenshi.github.io/vanilla.Router/dist/0.0.3/vanilla.router.js</p>
+                <p>https://yanqirenshi.github.io/vanilla.Router/dist/0.0.3/vanilla-router.js  ※非推奨</p>
+                <p>https://yanqirenshi.github.io/vanilla.Router/dist/0.0.2/vanilla.router.js</p>
+                <p>https://yanqirenshi.github.io/vanilla.Router/dist/0.0.2/vanilla-router.js  ※非推奨</p>
+                <p>https://yanqirenshi.github.io/vanilla.Router/dist/0.0.1/vanilla.router.js</p>
+                <p>https://yanqirenshi.github.io/vanilla.Router/dist/0.0.1/vanilla-router.js  ※非推奨</p>
             </div>
         </div>
     </section>
