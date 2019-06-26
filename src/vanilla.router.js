@@ -296,6 +296,7 @@ class VanillaRouterRiot extends VanillaRouter {
             mounted: [],
             unmount: [],
         };
+
         for (let key in children) {
             let child = children[key];
 
@@ -306,14 +307,8 @@ class VanillaRouterRiot extends VanillaRouter {
             }
         }
 
-        // 不要なものは削除する。
         this.unmounts(root_tag, targets);
 
-        // すでにある場合はなにもしない。
-        if (targets.mounted.length > 0)
-            return;
-
-        // 未だ存在しない場合は mount する。
         let elm = root_tag.root;
         while (elm.firstChild)
             elm.removeChild(elm.firstChild);
@@ -363,6 +358,7 @@ class VanillaRouterRiot extends VanillaRouter {
         return keys.reduce(this.getTreeNodeCore, ht_tree);
     }
     draw404 (root_tag, routes, route, e) {
+
         let tag_name = this.getTreeNode(this, 'error.404.tag');
 
         if (!tag_name)

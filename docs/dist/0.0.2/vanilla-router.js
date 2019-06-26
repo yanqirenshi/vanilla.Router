@@ -1,7 +1,7 @@
 ///// ////////////////////////////////////////////////////////////////
 /////
 /////
-///// Vanilla Router. Ver Beta (0.0.3)
+///// Vanilla Router. Ver Beta (0.0.2)
 /////
 /////
 ///// ////////////////////////////////////////////////////////////////
@@ -206,15 +206,10 @@ class VanillaRouter extends VanillaRouterData {
 }
 
 class VanillaRouterRiot extends VanillaRouter {
-    constructor (sites, options) {
+    constructor (routes, options) {
         super(options);
 
-        this.action.tags = options.callbacks.tags;
-
-        // TODO: エイヤー
-        this.error = sites.error;
-
-        this.mature(sites.pages);
+        this.mature(routes);
     }
     unmounts (root_tag, targets) {
         for (let tag of targets.unmount) {
@@ -224,28 +219,17 @@ class VanillaRouterRiot extends VanillaRouter {
             delete root_tag.tags[unmount_tag_name];
         }
     }
-    mountCore (root_tag, tag_name, params, route) {
+    mountCore (root_tag, tag_name, params) {
         try {
             let new_page_tag = riot.mount(tag_name, { _route: { params: params } });
             root_tag.tags[tag_name] = new_page_tag[0];
         } catch (e) {
-            let msg = 'タグのマウントに失敗しました。';
-
-            console.warn(msg);
-            console.warn({
-                route: route,
-                root_tag: root_tag,
-                tag_name: tag_name,
-                params: params
-            });
-
-            throw {
-                code: 404,
-                message: msg,
-            };
+            dump(e);
+            dump({ root_tag:root_tag, tag_name:tag_name });
+            throw new Error('タグのマウントに失敗しました。');
         }
     }
-    mount (root_tag, tag_name, targets, params, route) {
+    mount (root_tag, tag_name, targets, params) {
         if (targets.mounted.length==1) {
             targets.mounted[0].update();
         } else {
@@ -255,33 +239,16 @@ class VanillaRouterRiot extends VanillaRouter {
             let page_holder_elem = root_tag.root;
             page_holder_elem.appendChild(elem);
 
-            this.mountCore(root_tag, tag_name, params, route);
+            this.mountCore(root_tag, tag_name, params);
         }
-    }
-    getTagNmae (node, data) {
-        let tag = node.tag;
-
-        if (typeof tag=='function')
-            return tag(node, data);
-
-        return tag;
     }
     assertNode (node, data) {
         if (node)
-            return node;
+            return;
 
-        let msg = '指定されたノードが存在しません。';
+        console.log(data);
 
-        console.warn(msg);
-        console.warn({
-            node: node,
-            data: data,
-        });
-
-        throw {
-            code: 404,
-            message: msg,
-        };
+        throw new Error('指定されたノードが存在しません。');
     }
     /**
      * routes から route で指定した node を取得します。
@@ -290,12 +257,20 @@ class VanillaRouterRiot extends VanillaRouter {
      * @routes   ルート情報(木構造)
      * @data     ルート情報(配列)
      */
-    drawCore (tag_name, root_tag, params, route) {
+    draw (root_tag, routes, data) {
+        let retsult = this.getNode(routes, data);
+
+        let node = retsult ? retsult.node : null;
+        this.assertNode(node, data);
+
+        let tag_name = retsult.node.tag;
+
         let children  = root_tag.tags;
         let targets = {
             mounted: [],
             unmount: [],
         };
+
         for (let key in children) {
             let child = children[key];
 
@@ -306,68 +281,7 @@ class VanillaRouterRiot extends VanillaRouter {
             }
         }
 
-        // 不要なものは削除する。
         this.unmounts(root_tag, targets);
-
-        // すでにある場合はなにもしない。
-        if (targets.mounted.length > 0)
-            return;
-
-        // 未だ存在しない場合は mount する。
-        let elm = root_tag.root;
-        while (elm.firstChild)
-            elm.removeChild(elm.firstChild);
-
-        this.mount(
-            root_tag,
-            tag_name,
-            targets,
-            params,
-            route
-        );
-    }
-    draw (root_tag, routes, data) {
-        let route   = data.slice();
-
-        try {
-
-            let retsult = this.getNode(routes, data);
-            let node    = retsult ? retsult.node : null;
-
-            this.assertNode(node, data);
-
-            let tag_name = this.getTagNmae(retsult.node, data);
-
-            this.drawCore(tag_name, root_tag, retsult.params, route);
-
-        } catch (e) {
-            if (e.code==404)
-                this.draw404(root_tag, routes, route, e);
-            else
-                throw e;
-        }
-    }
-    getTreeNodeCore (ht_tree, key) {
-        if (!ht_tree)
-            return null;
-
-        let val = ht_tree[key];
-        if (!val)
-            return null;
-
-        return val;
-    }
-    getTreeNode (ht_tree, keys_string) {
-        let keys = keys_string.split(".");
-
-        return keys.reduce(this.getTreeNodeCore, ht_tree);
-    }
-    draw404 (root_tag, routes, route, e) {
-        let tag_name = this.getTreeNode(this, 'error.404.tag');
-
-        if (!tag_name)
-            throw e;
-
-        this.drawCore(tag_name, root_tag, {}, route);
+        this.mount(root_tag, tag_name, targets, retsult.params);
     }
 }
